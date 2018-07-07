@@ -31,11 +31,12 @@ class BaiduImageSpider(scrapy.Spider):
 
     def start_next(self):
         self.index += 1
-        if self.index < len(keywords):
-            self.keyword = keywords[self.index]
-            self.page = 0
-            url = get_url(self.keyword, self.page)
-            return Request(url)
+        if self.index > len(keywords) - 1:
+            return None
+        self.keyword = keywords[self.index]
+        self.page = 0
+        url = get_url(self.keyword, self.page)
+        return Request(url)
 
     def parse(self, response):
         if response.status != 200:
@@ -59,9 +60,16 @@ class BaiduImageSpider(scrapy.Spider):
 
             if json_data:
                 data = [image for image in json_data['data'] if image]
-                for image in data:
-                    image.pop('is')
-                    yield ImageItem(**image)
+                if data:
+                    for image in data:
+                        image.pop('is')
+                        yield ImageItem(**image)
+                else:
+                    request = self.start_next()
+                    if request:
+                        yield request
+                    else:
+                        return
 
         self.page += 1
         if PAGE_LIMIT and self.page >= PAGE_LIMIT:
