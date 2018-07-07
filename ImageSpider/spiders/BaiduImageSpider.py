@@ -8,7 +8,7 @@ import re
 
 IMAGES_STORE = '/Users/puke/Documents/spider'
 KEYWORDS = ['金毛', '边牧']  # 搜索关键词
-PAGE_LIMIT = 1  # 最大页数限制(0表示不限制)
+PAGE_LIMIT = 0  # 最大页数限制(0表示不限制)
 
 SPIDER = 'image'
 URL = 'http://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=%s&pn=%d'
