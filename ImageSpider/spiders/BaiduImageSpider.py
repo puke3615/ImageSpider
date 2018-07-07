@@ -6,9 +6,9 @@ import json
 import sys
 import re
 
-IMAGES_STORE = '/Users/puke/Documents/spider'
+IMAGES_STORE = '/Users/puke/Documents/spider'  # 保存图片的文件夹
 KEYWORDS = ['金毛', '边牧']  # 搜索关键词
-PAGE_LIMIT = 0  # 最大页数限制(0表示不限制)
+PAGE_LIMIT = 1  # 最大页数限制(0表示不限制)
 
 SPIDER = 'image'
 URL = 'http://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=%s&pn=%d'
@@ -50,14 +50,15 @@ class BaiduImageSpider(scrapy.Spider):
         match = re.search(pattern, text)
         if match:
             json_data = None
+            text = match.group()
+            text = text.replace("\\'", "")
             try:
-                json_data = json.loads(match.group(), encoding='utf-8')
+                json_data = json.loads(text)
             except Exception as e:
                 print(e)
 
             if json_data:
                 data = [image for image in json_data['data'] if image]
-                print('*' * 200)
                 for image in data:
                     image.pop('is')
                     yield ImageItem(**image)

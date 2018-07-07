@@ -66,12 +66,11 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'ImageSpider.pipelines.DownLoadImgPipeline': 1,
     'ImageSpider.pipelines.EncodePipeline': 0,
     'ImageSpider.pipelines.JsonPipeline': 300,
     'ImageSpider.pipelines.TextPipeline': 301,
     'ImageSpider.pipelines.MarkdownPipeline': 302,
-    # 'ImageSpider.pipelines.ImageDownloaderPipeline': 303,
+    'ImageSpider.pipelines.DownLoadImgPipeline': 303,
 }
 IMAGES_STORE = BaiduImageSpider.IMAGES_STORE
 
