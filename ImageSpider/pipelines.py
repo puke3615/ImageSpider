@@ -74,6 +74,8 @@ class DownLoadImgPipeline(ImagesPipeline):
     def file_path(self, request, response=None, info=None):
         folder = info.spider.keyword
         filename = request.url.split('/')[-1]
+        if not filename.__contains__('.'):
+            filename += '.jpg'
         file_path = os.path.join(folder, filename)
         return file_path
 
