@@ -1,10 +1,10 @@
 # ImageSpider
 *百度图片爬虫*
 
-* 配置`ImageSpider/spiders/BaiduImageSpider.py`文件
-  * 更改`IMAGES_STORE`配置为图片存储路径
-  * 更改`KEYWORDS`为搜索关键词
-  * `python setup.py`直接运行即可
+* 直接运行`python setup.py --keywords=古风 --folder=/User/puke/Document --limit=0`
+  * `keywords`: 搜索关键词, 多个关键词用"-"分割
+  * `folder`: 图片保存路径, 文件夹不存在时会自动创建
+  * `limit`: 搜索图片的页数限制, 正数表示爬取limit页图片, 0表示爬取所有图片
 
 
 

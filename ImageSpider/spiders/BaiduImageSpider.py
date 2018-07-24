@@ -14,24 +14,27 @@ DEFAULT_PAGE_LIMIT = 1  # 最大页数限制(0表示不限制)
 SPIDER = 'image'
 URL = 'http://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=%s&pn=%d'
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--keywords', type=str, help='Input the keywords will search')
-parser.add_argument('--folder', type=str, default=DEFAULT_IMAGES_STORE, help='Input the folder will save images')
-parser.add_argument('--limit', type=int, default=DEFAULT_PAGE_LIMIT, help='Input images page limit')
+parser = argparse.ArgumentParser('参数协议')
+parser.add_argument('--keywords', type=str, help='搜索关键词')
+parser.add_argument('--folder', type=str, default=DEFAULT_IMAGES_STORE, help='图片保存目录')
+parser.add_argument('--limit', type=int, default=DEFAULT_PAGE_LIMIT, help='图片页数显示')
 args = parser.parse_args()
 
 keywords = args.keywords.split('-')
 folder = args.folder
-limit = args.limit
+limit = max(args.limit, 0)
 
 if not os.path.exists(folder):
     os.makedirs(folder)
 
-description = '>>> Arguments: keywords folder <<<\n' \
-              'Keywords: %s\n' \
-              'Save image folder: %s\n' \
-              'Image page limit(0: max): %d\n' \
-              'Start crawling? (y/n)\n' \
+if raw_input('是否打开该文件夹: %s? (y/n)\n' % folder) == 'y':
+    os.system('open %s' % folder)
+
+description = '>>> 爬虫配置 <<<\n' \
+              '搜索关键词: %s\n' \
+              '图片保存目录: %s\n' \
+              '爬取的图片页数(0表示爬取所有图片, 默认值为1): %d\n' \
+              '是否开始爬取？(y/n)\n' \
               % (', '.join(keywords), os.path.abspath(folder), limit)
 
 if raw_input(description) != 'y':
