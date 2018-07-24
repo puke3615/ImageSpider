@@ -72,7 +72,7 @@ ITEM_PIPELINES = {
     'ImageSpider.pipelines.MarkdownPipeline': 302,
     'ImageSpider.pipelines.DownLoadImgPipeline': 303,
 }
-IMAGES_STORE = BaiduImageSpider.IMAGES_STORE
+IMAGES_STORE = BaiduImageSpider.folder
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

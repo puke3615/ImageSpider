@@ -1,20 +1,41 @@
 # coding=utf-8
 from ImageSpider.items import ImageItem
 from scrapy import Request
+import argparse
 import scrapy
 import json
-import sys
 import re
+import os
 
-IMAGES_STORE = '/Users/puke/Documents/spider'  # 保存图片的文件夹
-KEYWORDS = ['金毛', '边牧']  # 搜索关键词
-PAGE_LIMIT = 0  # 最大页数限制(0表示不限制)
+DEFAULT_KEYWORDS = ['金毛', '边牧']  # 搜索关键词
+DEFAULT_IMAGES_STORE = '/Users/puke/Documents/spider'  # 保存图片的文件夹
+DEFAULT_PAGE_LIMIT = 1  # 最大页数限制(0表示不限制)
 
 SPIDER = 'image'
 URL = 'http://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=%s&pn=%d'
 
-arg = sys.argv
-keywords = KEYWORDS if len(arg) < 2 else arg[1].split('-')
+parser = argparse.ArgumentParser()
+parser.add_argument('--keywords', type=str, help='Input the keywords will search')
+parser.add_argument('--folder', type=str, default=DEFAULT_IMAGES_STORE, help='Input the folder will save images')
+parser.add_argument('--limit', type=int, default=DEFAULT_PAGE_LIMIT, help='Input images page limit')
+args = parser.parse_args()
+
+keywords = args.keywords.split('-')
+folder = args.folder
+limit = args.limit
+
+if not os.path.exists(folder):
+    os.makedirs(folder)
+
+description = '>>> Arguments: keywords folder <<<\n' \
+              'Keywords: %s\n' \
+              'Save image folder: %s\n' \
+              'Image page limit(0: max): %d\n' \
+              'Start crawling? (y/n)\n' \
+              % (', '.join(keywords), os.path.abspath(folder), limit)
+
+if raw_input(description) != 'y':
+    exit(0)
 
 
 def get_url(keyword, page=0):
@@ -72,7 +93,7 @@ class BaiduImageSpider(scrapy.Spider):
                         return
 
         self.page += 1
-        if PAGE_LIMIT and self.page >= PAGE_LIMIT:
+        if limit and self.page >= limit:
             request = self.start_next()
             if request:
                 yield request
